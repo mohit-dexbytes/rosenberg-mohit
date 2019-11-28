@@ -99,10 +99,4 @@ export class UsersController {
     const response = new ResponseObject(200, "User login successfully", userDetails);
     return { response };
   }
-
-  @post('/users/{id}/follower')
-  async follower(@param.path.string('id') id: string) {
-    const data = await this.followerRepository.find({ where: { user_id: id } });
-    return data;
-  }
 }

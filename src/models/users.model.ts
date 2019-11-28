@@ -1,6 +1,11 @@
-import { Entity, model, property } from '@loopback/repository';
+import { Entity, model, property, hasMany} from '@loopback/repository';
+import {Follower} from './follower.model';
 
-@model({ strictObjectIDCoercion: true })
+@model({
+  settings: {
+    strictObjectIDCoercion: true,
+  }
+})
 export class Users extends Entity {
   @property({
     type: 'string',
@@ -69,6 +74,8 @@ export class Users extends Entity {
   })
   updated_at?: string;
 
+  @hasMany(() => Follower, {keyTo: 'user_id'})
+  followers: Follower[];
 
   constructor(data?: Partial<Users>) {
     super(data);

@@ -1,6 +1,10 @@
 import { Entity, model, property } from '@loopback/repository';
 
-@model({ strictObjectIDCoercion: true })
+@model({
+  settings: {
+    strictObjectIDCoercion: true,
+  }
+})
 export class Follower extends Entity {
   @property({
     type: 'string',
