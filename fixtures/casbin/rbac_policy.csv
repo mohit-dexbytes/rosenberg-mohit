@@ -1,0 +1,12 @@
+p, Sid, follower, create
+p, Sid, follower, delete
+p, Sid, follower, find
+p, Sid, follower, create
+p, Sid, follower, find
+p, customer_service, follower, read
+p, customer_service, follower, create
+p, customer_service, follower, delete
+p, customer_service, follower, update
+p, customer_service, follower, find
+p, customer_service, follower, patch
+g, Sid, customer_service

@@ -24,6 +24,12 @@ import { BcryptHasher } from './services/hash.password.bcryptjs';
 import { PasswordHasherBindings } from './keys';
 import { SECURITY_SCHEME_SPEC, SECURITY_SPEC } from './utils/security-spec';
 import { JWTAuthenticationStrategy } from './authentication-strategies/jwt-strategy';
+import {
+  AuthorizationComponent,
+  AuthorizationTags,
+} from '@loopback/authorization';
+import { createEnforcer } from './services/enforcer';
+import { CasbinAuthorizationProvider } from './services/authorizor';
 
 
 export interface PackageInfo {
@@ -52,6 +58,14 @@ export class RosenbergMongoApplication extends BootMixin(
 
     // Bind authentication component related elements
     this.component(AuthenticationComponent);
+    this.component(AuthorizationComponent);
+
+    // authorization
+    this.bind('casbin.enforcer').toDynamicValue(createEnforcer);
+    this.bind('authorizationProviders.casbin-provider')
+      .toProvider(CasbinAuthorizationProvider)
+      .tag(AuthorizationTags.AUTHORIZER);
+
 
     // authentication
     registerAuthenticationStrategy(this, JWTAuthenticationStrategy);
@@ -80,6 +94,9 @@ export class RosenbergMongoApplication extends BootMixin(
     };
   }
   setUpBindings(): void {
+    // Bind package.json to the application context
+    this.bind(PackageKey).to(pkg);
+
     this.bind(TokenServiceBindings.TOKEN_SECRET).to(
       TokenServiceConstants.TOKEN_SECRET_VALUE,
     );

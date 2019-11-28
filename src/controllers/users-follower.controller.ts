@@ -20,6 +20,11 @@ import {
   Follower,
 } from '../models';
 import { UsersRepository } from '../repositories';
+import { AuthenticationBindings, authenticate } from '@loopback/authentication';
+import { compareId } from '../services/id.compare.authorizor';
+import { authorize } from '@loopback/authorization';
+
+
 
 export class UsersFollowerController {
   constructor(
@@ -38,6 +43,8 @@ export class UsersFollowerController {
       },
     },
   })
+  @authenticate('jwt')
+  // @authorize({ resource: 'follower', scopes: ['find'], voters: [compareId] })
   async find(
     @param.path.string('id') id: string,
     @param.query.object('filter') filter?: Filter<Follower>,

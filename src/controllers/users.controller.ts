@@ -12,9 +12,11 @@ import {
   getFilterSchemaFor,
   getModelSchemaRef,
   getWhereSchemaFor,
+  RestBindings,
   patch,
   put,
   del,
+  Request,
   requestBody,
 } from '@loopback/rest';
 import { Users } from '../models';
@@ -47,6 +49,9 @@ export class UsersController {
   constructor(
     @repository(UsersRepository)
     public usersRepository: UsersRepository,
+
+    @inject(RestBindings.Http.REQUEST
+    ) private req: Request,
 
     @repository(FollowerRepository)
     public followerRepository: FollowerRepository,
@@ -89,14 +94,19 @@ export class UsersController {
   async login(@requestBody(CredentialsRequestBody) credentials: Credentials):
     Promise<{ response: object }> {
     // ensure the user exists, and the password is correct
-    const user = await this.userService.verifyCredentials(credentials);
-
-    // convert a User object into a UserProfile object (reduced set of properties)
-    const userProfile = this.userService.convertToUserProfile(user);
-    // create a JSON Web Token based on the user profile
-    const token = await this.jwtService.generateToken(userProfile);
-    const userDetails = { ...user, token };
-    const response = new ResponseObject(200, "User login successfully", userDetails);
-    return { response };
+    const loginToken = this.req.headers.login_token;
+    if (loginToken == "rosenberg") {
+      const user = await this.userService.verifyCredentials(credentials);
+      // convert a User object into a UserProfile object (reduced set of properties)
+      const userProfile = this.userService.convertToUserProfile(user);
+      // create a JSON Web Token based on the user profile
+      const token = await this.jwtService.generateToken(userProfile);
+      const userDetails = { ...user, token };
+      const response = new ResponseObject(200, "User login successfully", userDetails);
+      return { response };
+    } else {
+      const response = new ResponseObject(400, "Access Denied");
+      return { response };
+    }
   }
 }
