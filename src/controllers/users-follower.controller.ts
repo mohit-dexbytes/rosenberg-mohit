@@ -23,8 +23,7 @@ import { UsersRepository } from '../repositories';
 import { AuthenticationBindings, authenticate } from '@loopback/authentication';
 import { compareId } from '../services/id.compare.authorizor';
 import { authorize } from '@loopback/authorization';
-
-
+import * as _ from 'underscore';
 
 export class UsersFollowerController {
   constructor(
@@ -51,9 +50,7 @@ export class UsersFollowerController {
   ) {
     const queryResult = await this.usersRepository.followers(id).find(filter);
     let followerIds: string[] = [];
-    queryResult.map((obj) => {
-      followerIds = [...followerIds, obj.followed_by];
-    });
+    followerIds = _.pluck(queryResult, 'followed_by');
     const userDetails = await this.usersRepository.find({ where: { id: { inq: followerIds } } });
     return userDetails;
   }
