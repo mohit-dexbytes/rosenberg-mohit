@@ -66,36 +66,51 @@ export class UsersController {
     public userService: UserService<Users, Credentials>,
   ) { }
 
-    /**
+  /**
    * User Register
    * Method: Post
-   * @req.body:{firt_name:"", last_name:"", email:"", password:""}
+   * @req.body:{
+      "first_name": "string",
+      "last_name": "string",
+      "email": "string",
+      "password": "string",
+      "company": "string",
+      "title": "string",
+      "job_position": "string",
+      "year": "date"
+    }
+    * @returns {error{}, success{}}
    */
 
   @post('/users/register')
   async userRegistration(@requestBody() Users: Omit<Users, 'id'>) {
     // ensure a valid email value and password value
-    validateCredentials(_.pick(Users, ['email', 'password']));
-    const checkEmail = await this.usersRepository.findOne({ where: { email: Users.email } });
-    if (!checkEmail) {
-      // encrypt the password
-      // eslint-disable-next-line require-atomic-updates
-      Users.password = await this.passwordHasher.hashPassword(Users.password);
-      await this.usersRepository.create(Users);
-      return new ResponseObject(201, "User registered successfully", "");
+    const ACCESS_API_KEY = this.req.headers['access-api-key'];
+    if (ACCESS_API_KEY == "Av76BwvWXZ-xK%40VX_EL$@gr_pj/?W8Ue?=RR&ZtJK6deAkZuzT?Dw#Fv+ST?2?D6f^d$PBDP") {
+      validateCredentials(_.pick(Users, ['email', 'password']));
+      const checkEmail = await this.usersRepository.findOne({ where: { email: Users.email } });
+      if (!checkEmail) {
+        // encrypt the password
+        // eslint-disable-next-line require-atomic-updates
+        Users.password = await this.passwordHasher.hashPassword(Users.password);
+        await this.usersRepository.create(Users);
+        return new ResponseObject(201, "User registered successfully", "");
+      } else {
+        return new ResponseObject(404, "Invalid email", "");
+      }
     } else {
-      return new ResponseObject(404, "Invalid email", "");
+      const response = new ResponseObject(400, "Access Denied");
+      return response;
     }
   }
 
-  
+
 
   @post('/users/login')
-  async login(@requestBody(CredentialsRequestBody) credentials: Credentials):
-    Promise<{ response: object }> {
+  async login(@requestBody(CredentialsRequestBody) credentials: Credentials) {
     // ensure the user exists, and the password is correct
-    const loginToken = this.req.headers.login_token;
-    if (loginToken == "rosenberg") {
+    const ACCESS_API_KEY = this.req.headers['access-api-key'];
+    if (ACCESS_API_KEY == "Av76BwvWXZ-xK%40VX_EL$@gr_pj/?W8Ue?=RR&ZtJK6deAkZuzT?Dw#Fv+ST?2?D6f^d$PBDP") {
       const user = await this.userService.verifyCredentials(credentials);
       // convert a User object into a UserProfile object (reduced set of properties)
       const userProfile = this.userService.convertToUserProfile(user);
@@ -103,10 +118,10 @@ export class UsersController {
       const token = await this.jwtService.generateToken(userProfile);
       const userDetails = { ...user, token };
       const response = new ResponseObject(200, "User login successfully", userDetails);
-      return { response };
+      return response;
     } else {
       const response = new ResponseObject(400, "Access Denied");
-      return { response };
+      return response;
     }
   }
 }

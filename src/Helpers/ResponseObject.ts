@@ -1,8 +1,6 @@
 const HttpStatus = require('http-status');
 
 /**
- *
- *
  * @class ResponseObject
  */
 

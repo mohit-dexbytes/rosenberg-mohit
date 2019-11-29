@@ -23,6 +23,7 @@ import { UsersRepository } from '../repositories';
 import { AuthenticationBindings, authenticate } from '@loopback/authentication';
 import { compareId } from '../services/id.compare.authorizor';
 import { authorize } from '@loopback/authorization';
+import ResponseObject from '../Helpers/ResponseObject';
 import * as _ from 'underscore';
 
 export class UsersFollowerController {
@@ -52,14 +53,14 @@ export class UsersFollowerController {
     let followerIds: string[] = [];
     followerIds = _.pluck(queryResult, 'followed_by');
     const userDetails = await this.usersRepository.find({ where: { id: { inq: followerIds } } });
-    return userDetails;
+    return new ResponseObject(201, "", userDetails);
   }
 
   @post('/users/{id}/followers', {
     responses: {
       '200': {
         description: 'Users model instance',
-        content: { 'application/json': { schema: getModelSchemaRef(Follower) } },
+        content: { 'multipart/form-data value': { schema: getModelSchemaRef(Follower) } },
       },
     },
   })
@@ -67,7 +68,8 @@ export class UsersFollowerController {
     @param.path.string('id') id: typeof Users.prototype.id,
     @requestBody({
       content: {
-        'application/json': {
+        'multipart/form-data value': {
+          'x-parser': 'stream',
           schema: getModelSchemaRef(Follower, {
             title: 'NewFollowerInUsers',
             exclude: ['id'],

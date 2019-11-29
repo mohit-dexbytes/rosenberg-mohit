@@ -33,13 +33,12 @@ export class JWTService implements TokenService {
       );
     }
 
-    let userProfile: UserProfile;
+    let userProfile: UserProfile; ``
 
     try {
       // decode user profile from token
       const decodedToken = await verifyAsync(token, this.jwtSecret);
       // don't copy over  token field 'iat' and 'exp', nor 'email' to user profile
-      console.log("****************", decodedToken);
       userProfile = Object.assign(
         { [securityId]: '', name: '' },
         {
@@ -53,7 +52,6 @@ export class JWTService implements TokenService {
         `Error verifying token : ${error.message}`,
       );
     }
-    console.log("****************", userProfile);
     return userProfile;
   }
 

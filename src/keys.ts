@@ -11,7 +11,7 @@ import { Credentials } from './repositories';
 
 export namespace TokenServiceConstants {
   export const TOKEN_SECRET_VALUE = 'myjwts3cr3t';
-  export const TOKEN_EXPIRES_IN_VALUE = '600';
+  export const TOKEN_EXPIRES_IN_VALUE = '6000000';
 }
 
 export namespace TokenServiceBindings {

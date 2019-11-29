@@ -1,5 +1,5 @@
-import { Entity, model, property, hasMany} from '@loopback/repository';
-import {Follower} from './follower.model';
+import { Entity, model, property, hasMany } from '@loopback/repository';
+import { Follower } from './follower.model';
 
 @model({
   settings: {
@@ -65,7 +65,7 @@ export class Users extends Entity {
 
   @property({
     type: 'date',
-    required: true,
+    default: new Date(),
   })
   created_at: string;
 
@@ -74,7 +74,7 @@ export class Users extends Entity {
   })
   updated_at?: string;
 
-  @hasMany(() => Follower, {keyTo: 'user_id'})
+  @hasMany(() => Follower, { keyTo: 'user_id' })
   followers: Follower[];
 
   constructor(data?: Partial<Users>) {
