@@ -66,16 +66,14 @@ export class UsersController {
     public userService: UserService<Users, Credentials>,
   ) { }
 
-  @post('/users/register', {
-    responses: {
-      '200': {
-        description: 'User Registration',
-        content: { 'application/json': { schema: getModelSchemaRef(Users) } },
-      },
-    },
-  })
-  async userRegistration(@requestBody() Users: Omit<Users, 'id'>) {
+    /**
+   * User Register
+   * Method: Post
+   * @req.body:{firt_name:"", last_name:"", email:"", password:""}
+   */
 
+  @post('/users/register')
+  async userRegistration(@requestBody() Users: Omit<Users, 'id'>) {
     // ensure a valid email value and password value
     validateCredentials(_.pick(Users, ['email', 'password']));
     const checkEmail = await this.usersRepository.findOne({ where: { email: Users.email } });
@@ -89,6 +87,8 @@ export class UsersController {
       return new ResponseObject(404, "Invalid email", "");
     }
   }
+
+  
 
   @post('/users/login')
   async login(@requestBody(CredentialsRequestBody) credentials: Credentials):
