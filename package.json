@@ -1,7 +1,7 @@
 {
-  "name": "rosenberg_mongo",
+  "name": "rosenberg",
   "version": "1.0.0",
-  "description": "New folder",
+  "description": "Rosenberg",
   "keywords": [
     "loopback-application",
     "loopback"
@@ -57,6 +57,7 @@
     "lodash": "^4.17.15",
     "loopback-connector-mongodb": "^4.2.0",
     "mongodb": "^3.3.5",
+    "underscore": "^1.9.1",
     "util": "^0.12.1"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
-import {RosenbergMongoApplication} from './application';
-import {ApplicationConfig} from '@loopback/core';
+import { RosenbergMongoApplication } from './application';
+import { ApplicationConfig } from '@loopback/core';
 
-export {RosenbergMongoApplication};
+export { RosenbergMongoApplication };
 
 export async function main(options: ApplicationConfig = {}) {
   const app = new RosenbergMongoApplication(options);
@@ -10,7 +10,7 @@ export async function main(options: ApplicationConfig = {}) {
 
   const url = app.restServer.url;
   console.log(`Server is running at ${url}`);
-  console.log(`Try ${url}/ping`);
+  console.log(`Try ${url}/users`);
 
   return app;
 }
