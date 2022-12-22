@@ -53,7 +53,7 @@
     "bcryptjs": "^2.4.3",
     "casbin": "^3.0.7",
     "isemail": "^3.2.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.15",
     "loopback-component-storage": "^3.6.3",
     "loopback-connector-mongodb": "^4.2.0",
