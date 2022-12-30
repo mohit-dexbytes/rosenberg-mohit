@@ -64,7 +64,7 @@
   "devDependencies": {
     "@loopback/authentication": "^3.2.3",
     "@loopback/authorization": "^0.4.5",
-    "@loopback/build": "^2.0.16",
+    "@loopback/build": "^9.0.6",
     "@loopback/testlab": "^1.9.4",
     "@types/lodash": "^4.14.149",
     "@types/node": "^10.17.5",
